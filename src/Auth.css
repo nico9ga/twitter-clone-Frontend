@@ -1,0 +1,237 @@
+/* Estilos Base */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Inputs */
+.input-group {
+  width: 90%;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.input-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Botón de autenticación */
+.auth-button {
+  width: 100%;
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s ease-in-out;
+}
+
+.auth-button:hover {
+  background-color: #165dd9;
+}
+
+/* Toggle de login/registro */
+.toggle-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #1877f2;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.toggle-button:hover {
+  text-decoration: underline;
+}
+
+/* Página Principal */
+.main-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #f0f2f5;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90vh;
+  overflow: hidden;
+}
+
+/* Sidebar oculta en móviles */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -240px;
+    top: 0;
+    height: 90vh;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.open {
+    transform: translateX(240px);
+  }
+}
+
+/* Botón menú hamburguesa */
+@media (max-width: 768px) {
+  .menu-button {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 1100;
+    transition: background 0.3s ease-in-out;
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .menu-button {
+    display: none;
+  }
+}
+
+.menu-button:hover {
+  background: #165dd9;
+}
+
+/* Feed */
+.feed {
+  flex: 1;
+  padding: 30px;
+  margin: 0 20px;
+}
+
+/* Tweet */
+.tweet {
+  background: white;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+/* Botones del Tweet */
+.tweet-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.tweet-actions button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.tweet-actions button:hover {
+  opacity: 0.7;
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+  display: block;
+  width: 100%;
+  background-color: #e0245e;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s ease-in-out;
+  margin-top: auto;
+}
+
+.logout-button:hover {
+  background-color: #c21b49;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+  }
+  .feed {
+    max-width: 100%;
+    padding: 25px;
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+  .feed {
+    padding: 5px;
+    max-width: 100%;
+    margin: 0 25px;
+  }
+  .tweet {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+  }
+}
