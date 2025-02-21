@@ -1,0 +1,22 @@
+.tweet {
+    background: white;
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+  }
+
+.tweet-username{
+  color: blue;
+  align-self: flex-start;
+  padding: 10px;
+}
+
+.tweet-date{
+  color: rgb(62, 62, 62);
+  align-self: flex-end;
+  padding: 10px;
+}
