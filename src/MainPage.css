@@ -1,0 +1,43 @@
+.new-tweet-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .new-tweet-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .new-tweet-form button {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .new-tweet-form button:hover {
+    background-color: #0d8bf0;
+  }
+  
+  .load-more-button {
+    background-color: #657786;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .load-more-button:hover {
+    background-color: #556575;
+  }
+  

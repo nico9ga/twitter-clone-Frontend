@@ -1,56 +1,132 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Tweet from "./Tweet";
 import "./ProfilePage.css";
-import Tweet from "./Tweet.js";
 
 const ProfilePage = () => {
-    const [isFollowing, setIsFollowing] = useState(false);
-    const navigate = useNavigate();
-  
-  // Simulación de datos del usuario
+  const [user, setUser] = useState(null);
+  const [tweets, setTweets] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
+  const navigate = useNavigate();
   const { username } = useParams();
-  const user = {
-    name: "Juan Pérez",
-    username: username,
-    tweets: [
-      { id: 1, content: "¡Hola mundo!", username: "juan perez", date: "hoy"  },
-      { id: 2, content: "texto de prueba", username: "juan perez", date: "hoy"},
-      { id: 3, content: "Desarrollando mi clon de Twitter", username: "juan perez", date: "hoy"},
-    ],
-    followers: 1200,
-    following: 300,
+
+  const fetchUserTweets = useCallback(async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/twitts?limit=1000&offset=0`);
+      if (!response.ok) throw new Error("Error al obtener tweets");
+
+      const data = await response.json();
+      const userTweets = data.filter((tweet) => tweet.user.id === userId);
+      setTweets(userTweets);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const fetchUserProfile = useCallback(async (fullName) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/auth/user/${fullName}`);
+      if (!response.ok) throw new Error("Error al obtener el usuario");
+
+      const userData = await response.json();
+      setUser(userData);
+      fetchUserTweets(userData.id);
+    } catch (error) {
+      console.error(error);
+      navigate("/");
+    }
+  }, [fetchUserTweets, navigate]);
+
+  useEffect(() => {
+    const fetchAuthUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3001/api/auth/check-status", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          localStorage.removeItem("token");
+          navigate("/");
+          return;
+        }
+
+        const authData = await response.json();
+        setAuthUser(authData);
+
+        if (!username || username === authData.fullName) {
+          setUser(authData);
+          fetchUserTweets(authData.id);
+        } else {
+          fetchUserProfile(username);
+        }
+      } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+        navigate("/");
+      }
+    };
+
+    fetchAuthUser();
+  }, [navigate, username, fetchUserProfile, fetchUserTweets]);
+
+  const handleDeleteTweet = async (tweetId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/api/twitts/${tweetId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Error al eliminar tweet");
+      setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
   };
+
+  if (!user) {
+    return <p>Cargando perfil...</p>;
+  }
+
   return (
     <div className="profile-container">
-        <button className="back-button" onClick={() => navigate("/feed")}>
-        Volver al Feed
-      </button>
+      <button className="back-button" onClick={() => navigate("/feed")}>Volver al Feed</button>
       <div className="profile-card">
-        <h2 className="profile-username">@{user.username}</h2>
-        <h1 className="profile-name">{user.name}</h1>
+        <h2 className="profile-username">@{user.fullName}</h2>
+        <h1 className="profile-name">{user.fullName}</h1>
         <p className="profile-followers">
-          <strong>{user.followers}</strong> seguidores |{" "}
-          <strong>{user.following}</strong> siguiendo
+          <strong>{user.followers}</strong> seguidores | <strong>{user.following}</strong> siguiendo
         </p>
-        <button
-          className= "follow-button" onClick={toggleFollow}
-        >
-          {isFollowing ? "Dejar de seguir" : "Seguir"}
-        </button>      
+        {authUser?.id !== user.id && (
+          <button className="follow-button" onClick={toggleFollow}>
+            {isFollowing ? "Dejar de seguir" : "Seguir"}
+          </button>
+        )}
         <h3 className="profile-tweets-title">Tweets</h3>
         <div className="profile-tweets">
-          {user.tweets.map((tweet) => (
-            <Tweet key={tweet.id} tweet={tweet} />
+          {tweets.map((tweet) => (
+            <Tweet key={tweet.twitt_id} tweet={tweet} currentUser={authUser} onDelete={handleDeleteTweet} />
           ))}
         </div>
       </div>
     </div>
   );
 };
-
 
 export default ProfilePage;
