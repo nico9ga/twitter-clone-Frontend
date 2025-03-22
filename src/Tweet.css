@@ -8,9 +8,16 @@
   }
 
 .tweet-username{
-  color: blue;
-  align-self: flex-start;
-  padding: 10px;
+  color: #1da1f2; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  font-size: 18px;
+}
+
+.tweet-username:hover {
+  color: #0c85d0; 
+  text-decoration: underline;
 }
 
 .tweet-date{
@@ -53,4 +60,62 @@
 
 .comment-button:hover {
   background-color: #0c85d0;
+}
+
+.comment-username {
+  color: #1da1f2; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.comment-username:hover {
+  color: #0c85d0; 
+  text-decoration: underline;
+}
+
+.tweet-input {
+  width: fit-content;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  margin: 10px;
+  transition: border-color 0.3s;
+}
+
+.tweet-input:focus {
+  border-color: #1da1f2;
+}
+
+/* Estilos de los botones */
+.edit-buttons {
+  margin-top: 5px;
+  display: flex;
+  gap: 10px;
+}
+
+.save-button,
+.cancel-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.save-button:hover {
+  background-color: #0c85d0;
+}
+
+.cancel-button {
+  background-color: #383838;
+}
+
+.cancel-button:hover {
+  background-color: #999;
 }

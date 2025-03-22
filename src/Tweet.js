@@ -128,14 +128,22 @@ const Tweet = ({ tweet, currentUser, onDelete, onEdit }) => {
       </div>
 
       {isEditing ? (
-        <div className="tweet-edit">
-          <input type="text" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-          <button onClick={handleEdit}>Guardar</button>
-          <button onClick={() => setIsEditing(false)}>Cancelar</button>
-        </div>
-      ) : (
-        <p className="tweet-content">{tweet.content}</p>
-      )}
+  <div className="tweet-edit">
+    <input 
+      type="text" 
+      value={editedContent} 
+      onChange={(e) => setEditedContent(e.target.value)} 
+      className="tweet-input"
+      placeholder="Escribe tu tweet..."
+    />
+    <div className="edit-buttons">
+      <button onClick={handleEdit} className="save-button">Guardar</button>
+      <button onClick={() => setIsEditing(false)} className="cancel-button">Cancelar</button>
+    </div>
+  </div>
+) : (
+  <p className="tweet-content">{tweet.content}</p>
+)}
 
       <div className="tweet-actions">
         <button onClick={handleLike}>{liked ? "💖" : "❤️"} {likes}</button>
@@ -148,11 +156,16 @@ const Tweet = ({ tweet, currentUser, onDelete, onEdit }) => {
         <div className="tweet-comments">
           <h4>Comentarios</h4>
           {comments.map((comment) => (
-            <div key={comment.comment_id} className="comment">
-              <strong>{comment.user.fullName}</strong>
-              <p className="comment-text">{comment.content}</p>
-            </div>
-          ))}
+  <div key={comment.comment_id} className="comment">
+    <span 
+      className="comment-username" 
+      onClick={() => navigate(`/profile/${comment.user.fullName}`)}
+    >
+      @{comment.user.fullName}
+    </span>
+    <p className="comment-text">{comment.content}</p>
+  </div>
+))}
 
 <div className="add-comment">
   <input
