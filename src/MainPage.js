@@ -5,46 +5,50 @@ import "./MainPage.css";
 
 const MainPage = () => {
   const [user, setUser] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tweets, setTweets] = useState([]);
   const [newTweet, setNewTweet] = useState("");
   const [limit, setLimit] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/");
-        return;
-      }
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      navigate("/"); // Redirigir a login si no hay token
+      return;
+    }
   
+    const fetchUserAndTweets = async () => {
       try {
         const response = await fetch("http://localhost:3001/api/auth/check-status", {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
   
         if (!response.ok) {
-          localStorage.removeItem("token");
-          navigate("/");
-          return;
+          throw new Error("Error al obtener usuario");
         }
   
-        const data = await response.json();
-        setUser(data);
-        fetchTweets(limit); // Usa limit aquí
+        const userData = await response.json();
+        console.log("Datos del usuario:", userData);
+        setUser(userData);
+  
+
+        const tweetResponse = await fetch(`http://localhost:3001/api/twitts?limit=${limit}&offset=0`);
+        if (!tweetResponse.ok) throw new Error("Error al obtener tweets");
+        const tweetsData = await tweetResponse.json();
+        setTweets(tweetsData);
       } catch (error) {
-        console.error("Error al obtener usuario:", error);
-        navigate("/");
+        console.error("Error en fetchUserAndTweets:", error);
       }
     };
   
-    fetchUser();
-  }, [navigate, limit]);
+    fetchUserAndTweets();
+  }, [navigate]); // 
+  
 
   const fetchTweets = async (newLimit) => {
     try {
@@ -105,10 +109,6 @@ const MainPage = () => {
     fetchTweets(newLimit);
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -116,53 +116,53 @@ const MainPage = () => {
 
   return (
     <div className="main-container">
-      <button className="menu-button" onClick={toggleSidebar}>☰</button>
-
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-header">
-          <h2>Perfil</h2>
+      <div className="left-sidebar">
+  {user && (
+    <>
+    <div className="user-container">
+    <div className="reload-circle" onClick={() => navigate("/")} />
+          <div className="profile-picture-placeholder"></div> {/* Círculo gris */}
+          <div className="user-details">
+        <h3>{user.fullName}</h3>
+        <p>@{user.username}</p>
         </div>
-
-        {user ? (
-          <button 
-            className="profile-button"
-            onClick={() => navigate(`/profile/${user.fullName}`)}
-          >
-            {user.fullName}
-          </button>
-        ) : (
-          <p>Cargando...</p>
-        )}
-
-        <button className="logout-button" onClick={handleLogout}>Cerrar Sesión</button>
+        <button className="profile-button" onClick={() => navigate(`/profile/${user.fullName}`)}>
+        Perfil
+      </button>
+      <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
+      <button className="load-more-button" onClick={handleLoadMore}>Cargar más tweets</button>
       </div>
+    </>
+  )}
+</div>
 
+      {/* Feed principal */}
       <div className="feed">
         <h2>Inicio</h2>
 
+        {/* Formulario para twittear */}
         <form className="new-tweet-form" onSubmit={handleTweetSubmit}>
-          <input className="textTwittear"
+          <input
+            className="textTwittear"
             type="text"
             value={newTweet}
             onChange={(e) => setNewTweet(e.target.value)}
             placeholder="¿Qué está pasando?"
             required
           />
-          <button className="twittear" type="submit">Twittear</button>
+          <button className="twittear small" type="submit">Twittear</button>
         </form>
 
         <div className="feed-tweets">
           {tweets.map((tweet) => (
-            <Tweet 
-              key={tweet.twitt_id} 
-              tweet={tweet} 
-              currentUser={tweet.user.fullName} 
-              onDelete={handleDeleteTweet} 
+            <Tweet
+              key={tweet.twitt_id}
+              tweet={tweet}
+              currentUser={user?.fullName}
+              onDelete={handleDeleteTweet}
             />
           ))}
         </div>
-
-        <button className="load-more-button" onClick={handleLoadMore}>Cargar más tweets</button>
       </div>
     </div>
   );

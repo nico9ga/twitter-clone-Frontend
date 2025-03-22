@@ -1,47 +1,47 @@
+/* Asegura que los elementos estén en una fila y no se superpongan */
+.main-container {
+  display: flex; /* Coloca la barra lateral y el perfil en fila */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
+/* Estilos para la barra lateral */
+.left-sidebar {
+  width: 250px; /* Tamaño fijo de la barra lateral */
+  background-color: #f5f5f5; /* Color de fondo */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid #ddd; /* Línea divisoria */
+}
+
+/* Espacio para la imagen de perfil */
+.profile-picture-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: gray; /* Circulo gris */
+  margin-bottom: 10px;
+}
+
+/* Asegura que el contenedor de perfil ocupe el resto del espacio */
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    padding: 20px;
-}
-
-.back-button{
-    align-self: flex-start;
-    background-color: #363636cc;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.2rem;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
-
-.profile-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    text-align:left;
-}
-
-.profile-picture {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
+  width: 100%;
+  flex-grow: 1; /* Ocupará todo el espacio disponible */
+  margin-left: 270px; /* Debe ser mayor que el ancho de la barra lateral para evitar superposición */
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;  /* Agrega scroll si el contenido es muy largo */
 }
 
 .profile-username {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    width: auto;
 }
 
 .profile-bio {
@@ -81,3 +81,95 @@
     margin-bottom: 10px;
     font-size: clamp(0.9rem, 2vw, 1.1rem);
   }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre la foto y la info */
+    width: 100%;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.user-handle {
+    font-size: 14px;
+    color: #666;
+}
+  
+  .profile-button,
+  .logout-button{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .profile-button {
+    background-color: #1da1f2;
+    color: white;
+  }
+  
+  .logout-button {
+    background-color: #d9534f;
+    color: white;
+  }
+  
+  
+   /* Círculo azul para recargar la página */
+   .reload-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #1da1f2;
+    border-radius: 50%;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  .reload-circle:hover {
+    background-color: #0d8fdb;
+  }
+  /* Contenedor del usuario con los elementos apilados */
+  .user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px; /* Espacio entre el círculo azul, la foto y los detalles */
+    margin-top: 10px; /* Un poco de espacio desde arriba */
+  }
+  
+  /* Círculo azul encima */
+  .reload-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #1da1f2;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .reload-circle:hover {
+    background-color: #0d8fdb;
+  }
+  
+  
+  /* Botones alineados correctamente */
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px; /* Espaciado entre botones */
+  }
+  

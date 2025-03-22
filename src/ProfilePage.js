@@ -96,6 +96,11 @@ const ProfilePage = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
   };
@@ -105,25 +110,54 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="profile-container">
-      <button className="back-button" onClick={() => navigate("/feed")}>Volver al Feed</button>
-      <div className="profile-card">
+    <div className="main-container">
+      {/* Barra Lateral */}
+      {authUser && (
+        <aside className="left-sidebar">
+          <div className="user-container">
+            <div className="reload-circle" onClick={() => navigate("/")} />
+            <div className="profile-picture-placeholder"></div> {/* Círculo gris */}
+            <div className="user-details">
+              <h3>{authUser.fullName}</h3>
+              <p>@{authUser.username}</p>
+            </div>
+          </div>
+  
+          {/* Botones de navegación */}
+          <nav className="buttons-container">
+            <button className="profile-button" onClick={() => navigate(`/profile/${authUser.fullName}`)}>
+              Perfil
+            </button>
+            <button className="logout-button" onClick={handleLogout}>
+              Cerrar sesión
+            </button>
+          </nav>
+        </aside>
+      )}
+  
+      {/* Contenido del Perfil */}
+      <div className="profile-container">
         <h2 className="profile-username">@{user.fullName}</h2>
         <h1 className="profile-name">{user.fullName}</h1>
         <p className="profile-followers">
           <strong>{user.followers}</strong> seguidores | <strong>{user.following}</strong> siguiendo
         </p>
+  
         {authUser?.id !== user.id && (
           <button className="follow-button" onClick={toggleFollow}>
             {isFollowing ? "Dejar de seguir" : "Seguir"}
           </button>
         )}
-        <h3 className="profile-tweets-title">Tweets</h3>
-        <div className="profile-tweets">
-          {tweets.map((tweet) => (
-            <Tweet key={tweet.twitt_id} tweet={tweet} currentUser={authUser} onDelete={handleDeleteTweet} />
-          ))}
-        </div>
+  
+        {/* Tweets del usuario */}
+        <section className="profile-tweets-section">
+          <h3 className="profile-tweets-title">Tweets</h3>
+          <div className="profile-tweets">
+            {tweets.map((tweet) => (
+              <Tweet key={tweet.twitt_id} tweet={tweet} currentUser={authUser} onDelete={handleDeleteTweet} />
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

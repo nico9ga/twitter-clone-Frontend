@@ -4,25 +4,31 @@ import "./Auth.css";
 import MainPage from "./MainPage";
 
 const Auth = () => {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [isLogin, setIsLogin] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const toggleAuth = () => {
-    setIsLogin(!isLogin);
-  };
+  const navigate = useNavigate();
 
   const handleAuthSuccess = () => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken("");
     setIsAuthenticated(false);
+  };
+
+  const toggleAuth = () => {
+    setIsLogin(!isLogin);
   };
 
   return (
     <div className="auth-container">
       {isAuthenticated ? (
-        <MainPage onLogout={handleLogout} />
+        <MainPage token={token} onLogout={handleLogout} />
       ) : (
         <div className="auth-card">
           {isLogin ? (
@@ -67,12 +73,7 @@ const Login = ({ onAuthSuccess }) => {
       }
 
       const data = await response.json();
-      console.log("Login exitoso", data);
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
-
+      localStorage.setItem("token", data.token);
       onAuthSuccess();
       navigate("/feed");
 
@@ -134,7 +135,6 @@ const Register = ({ onAuthSuccess }) => {
     setError("");
     
     const userData = { email, password, fullName, birthday };
-    console.log("Enviando datos al backend:", userData);
     
     try {
       const response = await fetch("http://localhost:3001/api/auth/register", {
@@ -146,15 +146,12 @@ const Register = ({ onAuthSuccess }) => {
       const responseData = await response.json(); 
       
       if (!response.ok) {
-        console.error("Error en la respuesta del servidor:", responseData);
         throw new Error(responseData.message || "Error en el registro");
       }
     
-      console.log("Registro exitoso:", responseData);
       onAuthSuccess();
       navigate("/feed");
     } catch (error) {
-      console.error("Error al enviar datos:", error.message);
       setError(error.message);
     }    
   };
@@ -223,3 +220,4 @@ const Register = ({ onAuthSuccess }) => {
 };
 
 export default Auth;
+

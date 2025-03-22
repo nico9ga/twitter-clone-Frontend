@@ -15,29 +15,157 @@
   .new-tweet-form button {
     background-color: #1da1f2;
     color: white;
-    border: none;
+    width: 100%;
     padding: 10px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    text-align: center;
+    margin-bottom: 10px;
   }
   
   .new-tweet-form button:hover {
     background-color: #0d8bf0;
   }
-  
-  .load-more-button {
-    background-color: #657786;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
-  .load-more-button:hover {
-    background-color: #556575;
-  }
-  
+
+
+.user-info {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.profile-button {
+  margin-top: 5px;
+  background-color: #1da1f2;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+
+.profile-button:hover {
+  background-color: #0d8fdb;
+}
+}
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.left-sidebar {
+  width: 250px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  justify-content: flex-start;
+  gap: 20px; /* Espaciado entre elementos */
+}
+
+/* Contenedor del usuario con los elementos apilados */
+.user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10px; /* Espacio entre el círculo azul, la foto y los detalles */
+  margin-top: 10px; /* Un poco de espacio desde arriba */
+}
+
+/* Círculo azul encima */
+.reload-circle {
+  width: 40px;
+  height: 40px;
+  background-color: #1da1f2;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.reload-circle:hover {
+  background-color: #0d8fdb;
+}
+
+/* Círculo gris debajo del azul (para la foto de perfil) */
+.profile-picture-placeholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+/* Botones alineados correctamente */
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px; /* Espaciado entre botones */
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre la foto y la info */
+  width: 100%;
+}
+
+
+
+.profile-button,
+.logout-button,
+.load-more-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.profile-button {
+  background-color: #1da1f2;
+  color: white;
+}
+
+.logout-button {
+  background-color: #d9534f;
+  color: white;
+}
+
+.load-more-button {
+  background-color: #657786;
+  color: white;
+  margin-top: auto;
+}
+
+.load-more-container {
+  display: flex;
+  flex-direction: column;
+  height:400px;
+}
+.feed {
+  width: 100%;
+  flex-grow: 1; /* Ocupará todo el espacio disponible */
+  margin-left: 270px; /* Debe ser mayor que el ancho de la barra lateral para evitar superposición */
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto; /* Permite desplazamiento si el contenido es muy largo */
+}
+
