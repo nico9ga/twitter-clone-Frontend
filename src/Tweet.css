@@ -18,3 +18,39 @@
   align-self: flex-end;
   padding: 10px;
 }
+.add-comment {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre input y botón */
+  margin-top: 10px;
+}
+
+.comment-input {
+  flex: 1; /* Para que ocupe el espacio disponible */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.comment-input:focus {
+  border-color: #1da1f2; /* Color de Twitter */
+  background-color: #f0f8ff;
+}
+
+.comment-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease-in-out;
+}
+
+.comment-button:hover {
+  background-color: #0c85d0;
+}

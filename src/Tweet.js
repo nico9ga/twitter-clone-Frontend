@@ -154,15 +154,18 @@ const Tweet = ({ tweet, currentUser, onDelete, onEdit }) => {
             </div>
           ))}
 
-          <div className="add-comment">
-            <input
-              type="text"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Añadir un comentario..."
-            />
-            <button onClick={handleAddComment}>Comentar</button>
-          </div>
+<div className="add-comment">
+  <input
+    type="text"
+    value={newComment}
+    onChange={(e) => setNewComment(e.target.value)}
+    placeholder="Añadir un comentario..."
+    className="comment-input"
+  />
+  <button onClick={handleAddComment} className="comment-button">
+    Comentar
+  </button>
+</div>
         </div>
       )}
     </div>
