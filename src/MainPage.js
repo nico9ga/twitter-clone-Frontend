@@ -12,32 +12,36 @@ const MainPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    
+
     if (!token) {
       navigate("/"); // Redirigir a login si no hay token
       return;
     }
-  
+
     const fetchUserAndTweets = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/auth/check-status", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-  
+        const response = await fetch(
+          "http://localhost:3001/api/auth/check-status",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
         if (!response.ok) {
           throw new Error("Error al obtener usuario");
         }
-  
+
         const userData = await response.json();
         console.log("Datos del usuario:", userData);
         setUser(userData);
-  
 
-        const tweetResponse = await fetch(`http://localhost:3001/api/twitts?limit=${limit}&offset=0`);
+        const tweetResponse = await fetch(
+          `http://localhost:3001/api/twitts?limit=${limit}&offset=0`
+        );
         if (!tweetResponse.ok) throw new Error("Error al obtener tweets");
         const tweetsData = await tweetResponse.json();
         setTweets(tweetsData);
@@ -45,14 +49,15 @@ const MainPage = () => {
         console.error("Error en fetchUserAndTweets:", error);
       }
     };
-  
+
     fetchUserAndTweets();
-  }, [navigate]); // 
-  
+  }, [navigate]); //
 
   const fetchTweets = async (newLimit) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/twitts?limit=${newLimit}&offset=0`);
+      const response = await fetch(
+        `http://localhost:3001/api/twitts?limit=${newLimit}&offset=0`
+      );
       if (!response.ok) throw new Error("Error al obtener tweets");
       const data = await response.json();
       setTweets(data);
@@ -70,7 +75,7 @@ const MainPage = () => {
       const response = await fetch("http://localhost:3001/api/twitts", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content: newTweet }),
@@ -89,12 +94,15 @@ const MainPage = () => {
   const handleDeleteTweet = async (tweetId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:3001/api/twitts/${tweetId}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/twitts/${tweetId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Error al eliminar tweet");
       setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
@@ -117,24 +125,32 @@ const MainPage = () => {
   return (
     <div className="main-container">
       <div className="left-sidebar">
-  {user && (
-    <>
-    <div className="user-container">
-    <div className="reload-circle" onClick={() => navigate("/")} />
-          <div className="profile-picture-placeholder"></div> {/* Círculo gris */}
-          <div className="user-details">
-        <h3>{user.fullName}</h3>
-        <p>@{user.username}</p>
-        </div>
-        <button className="profile-button" onClick={() => navigate(`/profile/${user.fullName}`)}>
-        Perfil
-      </button>
-      <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
-      <button className="load-more-button" onClick={handleLoadMore}>Cargar más tweets</button>
+        {user && (
+          <>
+            <div className="user-container">
+              <div className="reload-circle" onClick={() => navigate("/")} />
+              <div className="profile-picture-placeholder"></div>{" "}
+              {/* Círculo gris */}
+              <div className="user-details">
+                <h3>{user.fullName}</h3>
+                <p>@{user.username}</p>
+              </div>
+              <button
+                className="profile-button"
+                onClick={() => navigate(`/profile/${user.fullName}`)}
+              >
+                Perfil
+              </button>
+              <button className="logout-button" onClick={handleLogout}>
+                Cerrar sesión
+              </button>
+              <button className="load-more-button" onClick={handleLoadMore}>
+                Cargar más tweets
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </>
-  )}
-</div>
 
       {/* Feed principal */}
       <div className="feed">
@@ -150,7 +166,9 @@ const MainPage = () => {
             placeholder="¿Qué está pasando?"
             required
           />
-          <button className="twittear small" type="submit">Twittear</button>
+          <button className="twittear small" type="submit">
+            Twittear
+          </button>
         </form>
 
         <div className="feed-tweets">

@@ -205,4 +205,16 @@
     width: 100%;
     gap: 10px; /* Espaciado entre botones */
   }
+
+  .follow-info {
+    display: flex;
+    gap: 20px;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .follow-info span {
+    cursor: pointer;
+  }
   

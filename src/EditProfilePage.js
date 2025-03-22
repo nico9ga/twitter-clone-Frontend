@@ -1,34 +1,73 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./EditProfilePage.css";
-const EditProfilePage = () => {
+
+const EditProfile = ({ onUpdateProfile }) => {
+  const location = useLocation();
+  const storedUser = JSON.parse(localStorage.getItem("editUser")) || {};
+  const user = location.state?.user || storedUser;
   const navigate = useNavigate();
-  const { username } = useParams(); // Obtener el username desde la URL
+  const [fullName, setName] = useState(user?.fullName || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-  const [fullName, setFullName] = useState(""); // Estado para el nombre
-  const [bio, setBio] = useState(""); // Estado para la biografía
+  useEffect(() => {
+    setName(user.fullName || ""); // Se actualiza cuando `user` cambia
+    setEmail(user.email || "");
+  }, [location.state?.user]); // Se ejecuta si `location.state.user` cambia
+  
 
-  const handleSave = () => {
-    // Aquí iría la lógica para actualizar la información en la base de datos
-    console.log("Guardando cambios:", { fullName, bio });
-    navigate(`/profile/${username}`); // Redirigir al perfil actualizado
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const updatedUser = { ...user, fullName };
+    localStorage.setItem("editUser", JSON.stringify(updatedUser)); // Guarda los cambios en localStorage
+  
+    onUpdateProfile(updatedUser);
   };
+  
+  if (!user) {
+    return <p>Cargando perfil...</p>;
+  }
 
   return (
     <div className="edit-profile-container">
-      <h1>Editar Perfil</h1>
-      <label>
-        Nombre completo:
-        <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-      </label>
-      <label>
-        Biografía:
-        <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
-      </label>
-      <button onClick={handleSave}>Guardar cambios</button>
-      <button onClick={() => navigate(-1)}>Cancelar</button>
+      <h2>Editar Perfil</h2>
+      
+      {/* Email solo lectura */}
+      <p className="email-display">{email}</p>
+
+      <form onSubmit={handleSubmit}>
+        <label>Nombre</label>
+        <input type="text" value={fullName} onChange={(e) => setName(e.target.value)} required />
+
+        {/* Botón para cambiar la contraseña */}
+        <button type="button" className="change-password-button" onClick={() => setShowPasswordFields(!showPasswordFields)}>
+          Cambiar Contraseña
+        </button>
+
+        {/* Campos de contraseña que aparecen al hacer clic */}
+        {showPasswordFields && (
+          <>
+            <label>Contraseña Actual</label>
+            <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+
+            <label>Nueva Contraseña</label>
+            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+          </>
+        )}
+
+        {/* Botones Confirmar y Cancelar */}
+        <div className="button-group">
+          <button type="submit" className="confirm-button">Confirmar</button>
+          <button type="button" className="cancel-button" onClick={() => navigate(-1)}>Cancelar</button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default EditProfilePage;
+export default EditProfile;

@@ -10,10 +10,14 @@ const ProfilePage = () => {
   const [authUser, setAuthUser] = useState(null);
   const navigate = useNavigate();
   const { username } = useParams();
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
 
   const fetchUserTweets = useCallback(async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/twitts?limit=1000&offset=0`);
+      const response = await fetch(
+        `http://localhost:3001/api/twitts?limit=1000&offset=0`
+      );
       if (!response.ok) throw new Error("Error al obtener tweets");
 
       const data = await response.json();
@@ -24,19 +28,41 @@ const ProfilePage = () => {
     }
   }, []);
 
-  const fetchUserProfile = useCallback(async (fullName) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/auth/user/${fullName}`);
-      if (!response.ok) throw new Error("Error al obtener el usuario");
+  const fetchUserProfile = useCallback(
+    async (fullName) => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/auth/user/${fullName}`
+        );
+        if (!response.ok) throw new Error("Error al obtener el usuario");
 
-      const userData = await response.json();
-      setUser(userData);
-      fetchUserTweets(userData.id);
+        const userData = await response.json();
+        setUser(userData);
+        fetchUserTweets(userData.id);
+      } catch (error) {
+        console.error(error);
+        navigate("/");
+      }
+    },
+    [fetchUserTweets, navigate]
+  );
+
+  const fetchFollowData = useCallback(async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/users/${userId}/followers`
+      );
+      if (!response.ok) throw new Error("Error al obtener seguidores");
+
+      const data = await response.json();
+      setFollowers(data.followers);
+      setFollowing(data.following);
     } catch (error) {
-      console.error(error);
-      navigate("/");
+      console.error("Error obteniendo seguidores:", error);
+      setFollowers(0);
+      setFollowing(0);
     }
-  }, [fetchUserTweets, navigate]);
+  }, []);
 
   useEffect(() => {
     const fetchAuthUser = async () => {
@@ -47,13 +73,16 @@ const ProfilePage = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:3001/api/auth/check-status", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3001/api/auth/check-status",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           localStorage.removeItem("token");
@@ -67,6 +96,7 @@ const ProfilePage = () => {
         if (!username || username === authData.fullName) {
           setUser(authData);
           fetchUserTweets(authData.id);
+          fetchFollowData(authData.id);
         } else {
           fetchUserProfile(username);
         }
@@ -82,12 +112,15 @@ const ProfilePage = () => {
   const handleDeleteTweet = async (tweetId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:3001/api/twitts/${tweetId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/twitts/${tweetId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Error al eliminar tweet");
       setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
@@ -122,10 +155,13 @@ const ProfilePage = () => {
               <p>@{authUser.username}</p>
             </div>
           </div>
-  
+
           {/* Botones de navegación */}
           <nav className="buttons-container">
-            <button className="profile-button" onClick={() => navigate(`/profile/${authUser.fullName}`)}>
+            <button
+              className="profile-button"
+              onClick={() => navigate(`/profile/${authUser.fullName}`)}
+            >
               Perfil
             </button>
             <button className="logout-button" onClick={handleLogout}>
@@ -134,16 +170,22 @@ const ProfilePage = () => {
           </nav>
         </aside>
       )}
-  
+
       {/* Contenido del Perfil */}
       <div className="profile-container">
-      <div className="profile-picture-placeholder"></div> 
+        <div className="profile-picture-placeholder"></div>
         <h2 className="profile-username">@{user.fullName}</h2>
         <h1 className="profile-name">{user.fullName}</h1>
-        <p className="profile-followers">
-          <strong>{user.followers}</strong> seguidores | <strong>{user.following}</strong> siguiendo
-        </p>
-  
+        <div className="follow-info">
+          <span>
+            <strong>{followers}</strong> Seguidores
+          </span>
+          <span> | </span>
+          <span>
+            <strong>{following}</strong> Siguiendo
+          </span>
+        </div>
+
         {authUser?.id !== user.id && (
           <button className="follow-button" onClick={toggleFollow}>
             {isFollowing ? "Dejar de seguir" : "Seguir"}
@@ -151,17 +193,36 @@ const ProfilePage = () => {
         )}
 
         {authUser?.id == user.id && (
-          <button className="edit-button" onClick={() => navigate(`/profile/${authUser.username}/edit`)}>
-          Editar perfil
-        </button>        
+          <button
+            className="edit-button"
+            onClick={() => {
+              localStorage.setItem("editUser", JSON.stringify(authUser));
+              navigate(`/profile/${authUser.username}/edit`);
+            }}            
+
+          >
+            Editar perfil
+          </button>
         )}
-  
+
         {/* Tweets del usuario */}
         <section className="profile-tweets-section">
           <h3 className="profile-tweets-title">Tweets</h3>
           <div className="profile-tweets">
             {tweets.map((tweet) => (
-              <Tweet key={tweet.twitt_id} tweet={tweet} currentUser={authUser} onDelete={handleDeleteTweet} />
+              <Tweet
+                key={tweet.twitt_id}
+                tweet={tweet}
+                currentUser={authUser}
+                onDelete={handleDeleteTweet}
+                onEdit={(tweetId, newContent) => {
+                  setTweets((prevTweets) =>
+                    prevTweets.map((t) =>
+                      t.twitt_id === tweetId ? { ...t, content: newContent } : t
+                    )
+                  );
+                }}
+              />
             ))}
           </div>
         </section>

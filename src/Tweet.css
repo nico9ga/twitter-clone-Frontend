@@ -1,14 +1,14 @@
 .tweet {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-  }
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
 
-.tweet-username{
-  color: #1da1f2; 
+.tweet-username {
+  color: #1da1f2;
   font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease-in-out;
@@ -16,11 +16,11 @@
 }
 
 .tweet-username:hover {
-  color: #0c85d0; 
+  color: #0c85d0;
   text-decoration: underline;
 }
 
-.tweet-date{
+.tweet-date {
   color: rgb(62, 62, 62);
   align-self: flex-end;
   padding: 10px;
@@ -63,14 +63,14 @@
 }
 
 .comment-username {
-  color: #1da1f2; 
+  color: #1da1f2;
   font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease-in-out;
 }
 
 .comment-username:hover {
-  color: #0c85d0; 
+  color: #0c85d0;
   text-decoration: underline;
 }
 
