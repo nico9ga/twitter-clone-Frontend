@@ -13,7 +13,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid #ddd; /* Línea divisoria */
+  border-right: 1px solid #ddd;
+  flex-shrink: 0;
 }
 
 /* Espacio para la imagen de perfil */
@@ -23,18 +24,20 @@
   border-radius: 50%;
   background-color: gray; /* Circulo gris */
   margin-bottom: 10px;
+  min-height: 80px;
 }
 
 /* Asegura que el contenedor de perfil ocupe el resto del espacio */
 .profile-container {
-  width: 100%;
-  flex-grow: 1; /* Ocupará todo el espacio disponible */
-  margin-left: 270px; /* Debe ser mayor que el ancho de la barra lateral para evitar superposición */
+  flex: 1;
+  width: auto;
+  flex-grow: 1; 
+  margin-left: 270px; 
   padding: 48px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;  /* Agrega scroll si el contenido es muy largo */
+  overflow-y: scroll;
+  box-sizing: border-box;
 }
 
 .profile-username {
@@ -69,6 +72,36 @@
 
 .follow-button:hover {
     background-color: #165dd9;
+}
+
+.follow-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.follow-button:hover {
+  background-color: #165dd9;
+}
+
+.edit-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+  background-color: #165dd9;
 }
 
 .tweet {

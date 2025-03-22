@@ -1,0 +1,82 @@
+.edit-profile-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Título */
+  .edit-profile-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Estilos generales para inputs */
+  .edit-profile-container label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .edit-profile-container input,
+  .edit-profile-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Área de texto (bio) */
+  .edit-profile-container textarea {
+    height: 100px;
+    resize: none;
+  }
+  
+  /* Botones */
+  .edit-profile-container button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .edit-profile-container button:first-of-type {
+    background-color: #1da1f2; /* Azul de Twitter */
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .edit-profile-container button:first-of-type:hover {
+    background-color: #0d8af0;
+  }
+  
+  .edit-profile-container button:last-of-type {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  .edit-profile-container button:last-of-type:hover {
+    background-color: #bbb;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 600px) {
+    .edit-profile-container {
+      width: 90%;
+      margin-top: 20px;
+    }
+  }
+  

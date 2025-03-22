@@ -116,7 +116,7 @@ const ProfilePage = () => {
         <aside className="left-sidebar">
           <div className="user-container">
             <div className="reload-circle" onClick={() => navigate("/")} />
-            <div className="profile-picture-placeholder"></div> {/* Círculo gris */}
+            <div className="profile-picture-placeholder"></div>
             <div className="user-details">
               <h3>{authUser.fullName}</h3>
               <p>@{authUser.username}</p>
@@ -137,6 +137,7 @@ const ProfilePage = () => {
   
       {/* Contenido del Perfil */}
       <div className="profile-container">
+      <div className="profile-picture-placeholder"></div> 
         <h2 className="profile-username">@{user.fullName}</h2>
         <h1 className="profile-name">{user.fullName}</h1>
         <p className="profile-followers">
@@ -147,6 +148,12 @@ const ProfilePage = () => {
           <button className="follow-button" onClick={toggleFollow}>
             {isFollowing ? "Dejar de seguir" : "Seguir"}
           </button>
+        )}
+
+        {authUser?.id == user.id && (
+          <button className="edit-button" onClick={() => navigate(`/profile/${authUser.username}/edit`)}>
+          Editar perfil
+        </button>        
         )}
   
         {/* Tweets del usuario */}
