@@ -159,7 +159,7 @@
   height:400px;
 }
 .feed {
-  width: 100%;
+  width: auto;
   flex-grow: 1; /* Ocupará todo el espacio disponible */
   margin-left: 270px; /* Debe ser mayor que el ancho de la barra lateral para evitar superposición */
   padding: 48px;
