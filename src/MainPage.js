@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Tweet from "./Tweet";
 import "./MainPage.css";
+import SearchBar from "./SearchBar";
 
 const MainPage = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,7 @@ const MainPage = () => {
   const [newTweet, setNewTweet] = useState("");
   const [limit, setLimit] = useState(10);
   const navigate = useNavigate();
+  const [filteredTweets, setFilteredTweets] = useState(tweets);
 
   useEffect(() => {
     //const token = localStorage.getItem("token");
@@ -246,6 +248,20 @@ const MainPage = () => {
 
       {/* Feed principal */}
       <div className="feed">
+
+      {/* Barra de búsqueda */}
+      <div className="search-bar-wrapper">
+        <SearchBar tweets={tweets} setFilteredTweets={setFilteredTweets} />
+      </div>
+
+      {/* Tweets filtrados */}
+      <div className="filtered-tweets-container">
+        {filteredTweets.map((tweet) => (
+          <Tweet key={tweet.twitt_id} tweet={tweet} />
+        ))}
+      </div>
+
+
         <h2>Inicio</h2>
 
         {/* Formulario para twittear */}
