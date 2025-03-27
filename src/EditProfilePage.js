@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import "./EditProfilePage.css";
 
-const EditProfile = ({ onUpdateProfile }) => {
+const EditProfilePage = ({ onUpdateProfile }) => {
   const location = useLocation();
   const storedUser = JSON.parse(localStorage.getItem("editUser")) || {};
   const user = location.state?.user || storedUser;
@@ -15,20 +15,26 @@ const EditProfile = ({ onUpdateProfile }) => {
   const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
-    setName(user.fullName || ""); // Se actualiza cuando `user` cambia
-    setEmail(user.email || "");
-  }, [location.state?.user]); // Se ejecuta si `location.state.user` cambia
-  
+    if (user) {
+      setName(user.fullName || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
     const updatedUser = { ...user, fullName };
-    localStorage.setItem("editUser", JSON.stringify(updatedUser)); // Guarda los cambios en localStorage
+    localStorage.setItem("editUser", JSON.stringify(updatedUser));
   
-    onUpdateProfile(updatedUser);
+    navigate(`/profile/${user.username}`);
+    //onUpdateProfile(updatedUser);
   };
   
+  const handleCancel = () => {
+    navigate(`/profile/${user.username}`);
+  };
+
   if (!user) {
     return <p>Cargando perfil...</p>;
   }
@@ -63,11 +69,11 @@ const EditProfile = ({ onUpdateProfile }) => {
         {/* Botones Confirmar y Cancelar */}
         <div className="button-group">
           <button type="submit" className="confirm-button">Confirmar</button>
-          <button type="button" className="cancel-button" onClick={() => navigate(-1)}>Cancelar</button>
+          <button type="button" className="cancel-button" onClick={() => handleCancel()}>Cancelar</button>
         </div>
       </form>
     </div>
   );
 };
 
-export default EditProfile;
+export default EditProfilePage;

@@ -11,15 +11,21 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    //const token = localStorage.getItem("token");
 
-    if (!token) {
+    /*if (!token) {
       navigate("/"); // Redirigir a login si no hay token
       return;
-    }
+    }*/
 
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/"); // Redirige a la pantalla de login si no hay token
+        return;
+      }
     const fetchUserAndTweets = async () => {
-      try {
+      /*try {
         const response = await fetch(
           "http://localhost:3001/api/auth/check-status",
           {
@@ -36,38 +42,91 @@ const MainPage = () => {
         }
 
         const userData = await response.json();
-        console.log("Datos del usuario:", userData);
-        setUser(userData);
+        console.log("Datos del usuario:", userData);*/
 
-        const tweetResponse = await fetch(
+        setUser({
+          fullName: "Juan Pérez",
+          username: "juanperez123",
+          email: "juanperez@example.com",
+          id: 1,
+        });//setUser(userData);
+
+        /*const tweetResponse = await fetch(
           `http://localhost:3001/api/twitts?limit=${limit}&offset=0`
         );
         if (!tweetResponse.ok) throw new Error("Error al obtener tweets");
-        const tweetsData = await tweetResponse.json();
-        setTweets(tweetsData);
-      } catch (error) {
+        const tweetsData = await tweetResponse.json();*/
+        setTweets([
+          {
+            twitt_id: 101,
+            content: "Este es mi primer tweet de prueba",
+            created_at: "2025-03-25T10:00:00Z",
+            user: {
+              fullName: "Juan Pérez",
+              username: "juanperez123",
+            },
+          },
+          {
+            twitt_id: 102,
+            content: "React es increíble 😃",
+            created_at: "2025-03-25T12:30:00Z",
+            user: {
+              fullName: "María Gómez",
+              username: "mariagomez",
+            },
+          },
+        ]);//setTweets(tweetsData);
+      /*} catch (error) {
         console.error("Error en fetchUserAndTweets:", error);
-      }
+      }*/
     };
 
     fetchUserAndTweets();
   }, [navigate]); //
 
   const fetchTweets = async (newLimit) => {
-    try {
+    /*try {
       const response = await fetch(
         `http://localhost:3001/api/twitts?limit=${newLimit}&offset=0`
       );
       if (!response.ok) throw new Error("Error al obtener tweets");
       const data = await response.json();
-      setTweets(data);
-    } catch (error) {
+      */setTweets([
+        {
+          twitt_id: 101,
+          content: "Este es mi primer tweet de prueba",
+          created_at: "2025-03-25T10:00:00Z",
+          user: {
+            fullName: "Juan Pérez",
+            username: "juanperez123",
+          },
+        },
+        {
+          twitt_id: 102,
+          content: "React es increíble 😃",
+          created_at: "2025-03-25T12:30:00Z",
+          user: {
+            fullName: "María Gómez",
+            username: "mariagomez",
+          },
+        },
+        {
+            twitt_id: 103,
+            content: "¡Probando la carga de más tweets!",
+            created_at: "2025-03-25T15:45:00Z",
+            user: {
+              fullName: "Carlos Ramírez",
+              username: "carlosram",
+            },
+        }, 
+      ]);//setTweets(tweetsData);
+    /*} catch (error) {
       console.error(error);
-    }
+    }*/
   };
 
   const handleTweetSubmit = async (e) => {
-    e.preventDefault();
+    /*e.preventDefault();
     if (!newTweet.trim()) return;
 
     try {
@@ -82,17 +141,28 @@ const MainPage = () => {
       });
 
       if (!response.ok) throw new Error("Error al crear tweet");
-      const createdTweet = await response.json();
+      const createdTweet = await response.json();*/
+      const createdTweet = {
+        twitt_id: tweets.length + 1,
+        content: newTweet,
+        created_at: new Date().toISOString(),
+        user: {
+          fullName: "Juan Pérez",
+          username: "juanperez123",
+        },
+      };
 
       setTweets([createdTweet, ...tweets]);
       setNewTweet("");
-    } catch (error) {
+    /*} catch (error) {
       console.error(error);
-    }
+    }*/
   };
 
   const handleDeleteTweet = async (tweetId) => {
-    try {
+   console.log("se ha presionado el booton eliminar tweet");
+   setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
+    /*try {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3001/api/twitts/${tweetId}`,
@@ -108,19 +178,41 @@ const MainPage = () => {
       setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
     } catch (error) {
       console.error(error);
-    }
+    }*/
   };
 
   const handleLoadMore = () => {
-    const newLimit = limit + 10;
+    /*const newLimit = limit + 10;
     setLimit(newLimit);
-    fetchTweets(newLimit);
+    fetchTweets(newLimit);*/
+    console.log("Cargando más tweets...");
+  setTweets([
+    ...tweets,
+    {
+      twitt_id: tweets.length + 1,
+      content: "Nuevo tweet cargado",
+      created_at: new Date().toISOString(),
+      user: {
+        fullName: "Usuario Extra",
+        username: "extra_user",
+      },
+    },
+  ]);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  const handleEditTweet = (tweetId, newContent) => {
+    setTweets((prevTweets) =>
+      prevTweets.map((tweet) =>
+        tweet.twitt_id === tweetId ? { ...tweet, content: newContent } : tweet
+      )
+    );
+  };
+  
 
   return (
     <div className="main-container">
@@ -174,11 +266,12 @@ const MainPage = () => {
         <div className="feed-tweets">
           {tweets.map((tweet) => (
             <Tweet
-              key={tweet.twitt_id}
-              tweet={tweet}
-              currentUser={user?.fullName}
-              onDelete={handleDeleteTweet}
-            />
+            tweet={tweet}
+            currentUser={user}
+            onDelete={handleDeleteTweet} // Asegúrate de que también esté definida
+            onEdit={handleEditTweet} // Verifica que esta función existe
+            setTweets={setTweets}
+          />          
           ))}
         </div>
       </div>

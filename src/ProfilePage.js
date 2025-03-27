@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Tweet from "./Tweet";
 import "./ProfilePage.css";
+import EditProfilePage from "./EditProfilePage";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -13,104 +14,105 @@ const ProfilePage = () => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
 
+  //datos de prueba
+  const userData = {
+    id: 2,
+    fullName: "Usuario Ejemplo",
+    username: "ejemplo",
+  };
+  const userTweets = [
+    {
+      twitt_id: 101,
+      content: "Este es mi primer tweet de prueba",
+      created_at: "2025-03-26T12:00:00Z",
+      user: { id: 2, fullName: "Usuario Ejemplo", username: "ejemplo" },
+    },
+    {
+      twitt_id: 102,
+      content: "Otro tweet de prueba para el perfil",
+      created_at: "2025-03-26T12:30:00Z",
+      user: { id: 2, fullName: "Usuario Ejemplo", username: "ejemplo" },
+    },
+  ];
+  const followData = { followers: 120, following: 75 };
+
+  const handleProfileUpdate = (updatedUser) => {
+    console.log("Perfil actualizado:", updatedUser);
+  };
+
   const fetchUserTweets = useCallback(async (userId) => {
-    try {
+
+    /*try {
       const response = await fetch(
         `http://localhost:3001/api/twitts?limit=1000&offset=0`
       );
       if (!response.ok) throw new Error("Error al obtener tweets");
 
       const data = await response.json();
-      const userTweets = data.filter((tweet) => tweet.user.id === userId);
+      const userTweets = data.filter((tweet) => tweet.user.id === userId);*/
       setTweets(userTweets);
-    } catch (error) {
+    /*} catch (error) {
       console.error(error);
-    }
+    }*/
   }, []);
 
   const fetchUserProfile = useCallback(
     async (fullName) => {
-      try {
+      /*try {
         const response = await fetch(
           `http://localhost:3001/api/auth/user/${fullName}`
         );
         if (!response.ok) throw new Error("Error al obtener el usuario");
 
-        const userData = await response.json();
+        const userData = await response.json();*/
         setUser(userData);
         fetchUserTweets(userData.id);
-      } catch (error) {
+      /*} catch (error) {
         console.error(error);
         navigate("/");
-      }
+      }*/
     },
     [fetchUserTweets, navigate]
   );
 
   const fetchFollowData = useCallback(async (userId) => {
-    try {
+    /*try {
       const response = await fetch(
         `http://localhost:3001/api/users/${userId}/followers`
       );
       if (!response.ok) throw new Error("Error al obtener seguidores");
 
-      const data = await response.json();
-      setFollowers(data.followers);
-      setFollowing(data.following);
-    } catch (error) {
+      const data = await response.json();*/
+      setFollowers(followData.followers);
+      setFollowing(followData.following);
+    /*} catch (error) {
       console.error("Error obteniendo seguidores:", error);
       setFollowers(0);
       setFollowing(0);
-    }
+    }*/
   }, []);
 
   useEffect(() => {
     const fetchAuthUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "http://localhost:3001/api/auth/check-status",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          localStorage.removeItem("token");
-          navigate("/");
-          return;
-        }
-
-        const authData = await response.json();
-        setAuthUser(authData);
-
-        if (!username || username === authData.fullName) {
-          setUser(authData);
-          fetchUserTweets(authData.id);
-          fetchFollowData(authData.id);
-        } else {
-          fetchUserProfile(username);
-        }
-      } catch (error) {
-        console.error("Error al obtener el usuario:", error);
-        navigate("/");
+      setAuthUser(userData); // Usa datos de prueba para autenticación
+      console.log("Auth User:", userData);
+  
+      if (!username || username === userData.username) {
+        setUser(userData);
+        setTweets(userTweets);
+        setFollowers(followData.followers);
+        setFollowing(followData.following);
+      } else {
+        fetchUserProfile(username);
       }
     };
-
+  
     fetchAuthUser();
-  }, [navigate, username, fetchUserProfile, fetchUserTweets]);
+  }, [navigate, username, fetchUserProfile]);
+  
 
   const handleDeleteTweet = async (tweetId) => {
-    try {
+    /*try {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3001/api/twitts/${tweetId}`,
@@ -126,7 +128,8 @@ const ProfilePage = () => {
       setTweets(tweets.filter((tweet) => tweet.twitt_id !== tweetId));
     } catch (error) {
       console.error(error);
-    }
+    }*/
+   console.log("boton eliminar tweets presionado")
   };
 
   const handleLogout = () => {
