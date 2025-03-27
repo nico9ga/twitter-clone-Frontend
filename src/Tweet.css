@@ -1,20 +1,123 @@
 .tweet {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-  }
-
-.tweet-username{
-  color: blue;
-  align-self: flex-start;
-  padding: 10px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
 }
 
-.tweet-date{
+.tweet-username {
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  font-size: 18px;
+}
+
+.tweet-username:hover {
+  color: #0c85d0;
+  text-decoration: underline;
+}
+
+.tweet-date {
   color: rgb(62, 62, 62);
   align-self: flex-end;
   padding: 10px;
+}
+.add-comment {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre input y botón */
+  margin-top: 10px;
+}
+
+.comment-input {
+  flex: 1; /* Para que ocupe el espacio disponible */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.comment-input:focus {
+  border-color: #1da1f2; /* Color de Twitter */
+  background-color: #f0f8ff;
+}
+
+.comment-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease-in-out;
+}
+
+.comment-button:hover {
+  background-color: #0c85d0;
+}
+
+.comment-username {
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.comment-username:hover {
+  color: #0c85d0;
+  text-decoration: underline;
+}
+
+.tweet-input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  margin-top: 10px;
+  transition: border-color 0.3s;
+}
+
+.tweet-input:focus {
+  border-color: #1da1f2;
+}
+
+/* Estilos de los botones */
+.edit-buttons {
+  margin-top: 5px;
+  display: flex;
+  gap: 10px;
+}
+
+.save-button,
+.cancel-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.save-button:hover {
+  background-color: #0c85d0;
+}
+
+.cancel-button {
+  background-color: #383838;
+}
+
+.cancel-button:hover {
+  background-color: #999;
 }

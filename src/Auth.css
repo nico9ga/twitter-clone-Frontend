@@ -1,11 +1,16 @@
-/* Estilos Base */
+
+html, body {
+  overflow: hidden;
+}
+
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: #f4f4f4;
-  padding: 20px;
+  overflow: hidden;
+  scrollbar-width: none;
 }
 
 .auth-card {

@@ -4,25 +4,31 @@ import "./Auth.css";
 import MainPage from "./MainPage";
 
 const Auth = () => {
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [isLogin, setIsLogin] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const toggleAuth = () => {
-    setIsLogin(!isLogin);
-  };
+  const navigate = useNavigate();
 
-  const handleAuthSuccess = () => {
+  const handleAuthSuccess = (token) => {
+    setToken(token);
     setIsAuthenticated(true);
+    localStorage.setItem("token", token);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken("");
     setIsAuthenticated(false);
+  };
+
+  const toggleAuth = () => {
+    setIsLogin(!isLogin);
   };
 
   return (
     <div className="auth-container">
       {isAuthenticated ? (
-        <MainPage onLogout={handleLogout} />
+        <MainPage token={token} onLogout={handleLogout} />
       ) : (
         <div className="auth-card">
           {isLogin ? (
@@ -50,34 +56,19 @@ const Login = ({ onAuthSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); 
+    setError("");
 
-    const userData = { email, password };
+    const fakeUser = {
+      email: "test@correo.com",
+      password: "123456",
+      token: "fake-token-123"
+    };
 
-    try {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error al iniciar sesión");
-      }
-
-      const data = await response.json();
-      console.log("Login exitoso", data);
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
-
-      onAuthSuccess();
+    if (email === fakeUser.email && password === fakeUser.password) {
+      onAuthSuccess(fakeUser.token);
       navigate("/feed");
-
-    } catch (error) {
-      setError(error.message);
+    } else {
+      setError("Credenciales incorrectas. Intenta de nuevo.");
     }
   };
 
@@ -106,9 +97,7 @@ const Login = ({ onAuthSuccess }) => {
           />
         </div>
 
-        <button type="submit" className="auth-button">
-          Ingresar
-        </button>
+        <button type="submit" className="auth-button">Ingresar</button>
       </form>
     </>
   );
@@ -125,38 +114,14 @@ const Register = ({ onAuthSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
       return;
     }
-    
     setError("");
-    
-    const userData = { email, password, fullName, birthday };
-    console.log("Enviando datos al backend:", userData);
-    
-    try {
-      const response = await fetch("http://localhost:3001/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-    
-      const responseData = await response.json(); 
-      
-      if (!response.ok) {
-        console.error("Error en la respuesta del servidor:", responseData);
-        throw new Error(responseData.message || "Error en el registro");
-      }
-    
-      console.log("Registro exitoso:", responseData);
-      onAuthSuccess();
-      navigate("/feed");
-    } catch (error) {
-      console.error("Error al enviar datos:", error.message);
-      setError(error.message);
-    }    
+    const fakeUser = { token: "fake-register-token-456" };
+    onAuthSuccess(fakeUser.token);
+    navigate("/feed");
   };
 
   return (
@@ -214,9 +179,7 @@ const Register = ({ onAuthSuccess }) => {
           />
         </div>
 
-        <button type="submit" className="auth-button">
-          Registrarse
-        </button>
+        <button type="submit" className="auth-button">Registrarse</button>
       </form>
     </>
   );
