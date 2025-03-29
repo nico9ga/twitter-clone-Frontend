@@ -1,13 +1,22 @@
+/* Estilos base del tweet */
 .tweet {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-  }
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
 
-.tweet-username{
+/* Encabezado del tweet */
+.tweet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tweet-username {
   color: #1da1f2; 
   font-weight: bold;
   cursor: pointer;
@@ -20,21 +29,136 @@
   text-decoration: underline;
 }
 
-.tweet-date{
+.tweet-date {
   color: rgb(62, 62, 62);
-  align-self: flex-end;
   padding: 10px;
 }
-.add-comment {
+
+/* Contenido del tweet */
+.tweet-content {
+  margin: 10px 0;
+  line-height: 1.4;
+}
+
+/* Acciones del tweet */
+.tweet-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.tweet-action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 10px; /* Espacio entre input y botón */
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.tweet-action-button:hover {
+  color: #1da1f2;
+}
+
+.delete-button:hover {
+  color: #e0245e;
+}
+
+/* Edición de tweet */
+.tweet-edit {
   margin-top: 10px;
 }
 
-.comment-input {
-  flex: 1; /* Para que ocupe el espacio disponible */
+.tweet-input {
+  width: 100%;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.tweet-input:focus {
+  border-color: #1da1f2;
+}
+
+.edit-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.save-button {
+  background-color: #1da1f2;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #0c85d0;
+}
+
+.cancel-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Sección de comentarios */
+.tweet-comments {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.comment {
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.comment-content {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.comment-username {
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.comment-username:hover {
+  color: #0c85d0;
+  text-decoration: underline;
+}
+
+/* Añadir nuevo comentario */
+.add-comment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 14px;
@@ -43,7 +167,7 @@
 }
 
 .comment-input:focus {
-  border-color: #1da1f2; /* Color de Twitter */
+  border-color: #1da1f2;
   background-color: #f0f8ff;
 }
 
@@ -62,62 +186,142 @@
   background-color: #0c85d0;
 }
 
-.comment-username {
-  color: #1da1f2; 
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
+.comment-button:disabled {
+  background-color: #9ac9f5;
+  cursor: not-allowed;
 }
 
-.comment-username:hover {
-  color: #0c85d0; 
-  text-decoration: underline;
+/* Edición de comentarios */
+.comment-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.tweet-input {
+.comment-edit-input {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
   font-size: 14px;
+  background-color: #f5f5f5;
   outline: none;
-  margin-top: 10px;
-  transition: border-color 0.3s;
+  transition: border-color 0.2s;
 }
 
-.tweet-input:focus {
+.comment-edit-input:focus {
   border-color: #1da1f2;
 }
 
-/* Estilos de los botones */
-.edit-buttons {
-  margin-top: 5px;
+.comment-edit-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
-.save-button,
-.cancel-button {
+.comment-save {
   background-color: #1da1f2;
   color: white;
+  padding: 6px 12px;
   border: none;
-  padding: 5px 10px;
   border-radius: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comment-save:hover {
+  background-color: #1991db;
+}
+
+.comment-cancel {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comment-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+/* Acciones de comentario */
+.comment-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.comment-edit,
+.comment-delete {
+  background: none;
+  border: none;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s ease-in-out;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
-.save-button:hover {
-  background-color: #0c85d0;
+.comment-edit-input {
+  width: 99%;
+  max-width: 99%; 
+  box-sizing: border-box; 
+  padding: 8px 12px; 
+  margin-bottom: 10px; 
 }
 
-.cancel-button {
-  background-color: #383838;
+.comment-edit:hover,
+.comment-delete:hover {
+  opacity: 1;
 }
 
-.cancel-button:hover {
-  background-color: #999;
+.comment-edit {
+  color: #1da1f2;
+}
+
+.comment-delete {
+  color: #e0245e;
+}
+
+.retweet-container {
+  border-left: 4px solid #1da1f2;
+  background-color: #f7f7f7;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.retweet-header {
+  color: #657786;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.retweet-header .retweet-label {
+  margin-left: 5px;
+}
+
+.original-author {
+  color: #657786;
+  font-size: 0.8em;
+  margin-left: 5px;
+  font-style: italic;
+}
+
+.original-date {
+  color: #657786;
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
+.tweet-content-container {
+  padding-left: 10px;
 }

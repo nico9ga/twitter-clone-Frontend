@@ -206,3 +206,163 @@
     gap: 10px; /* Espaciado entre botones */
   }
   
+  /* Estilos para el sistema de follows */
+.follow-button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #1da1f2;
+  background-color: white;
+  color: #1da1f2;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.follow-button:hover {
+  background-color: #e8f5fe;
+}
+
+.follow-button.unfollow {
+  background-color: #1da1f2;
+  color: white;
+}
+
+.follow-button.unfollow:hover {
+  background-color: #1991db;
+  border-color: #1991db;
+}
+
+/* Estilos para retweets */
+.retweet-container {
+  border-left: 3px solid #1da1f2;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+
+.retweet-info {
+  color: #657786;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.retweet-icon {
+  margin-right: 5px;
+  font-size: 1.2em;
+}
+
+/* Estilos para pestañas */
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin: 20px 0;
+}
+
+.tab-button {
+  padding: 15px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #657786;
+  position: relative;
+}
+
+.tab-button.active {
+  color: #1da1f2;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #1da1f2;
+}
+
+/* Otros estilos */
+.profile-followers {
+  margin: 10px 0;
+  color: #657786;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.edit-button:hover {
+  background-color: #f5f5f5;
+}
+
+.tweet-container {
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: white;
+}
+
+.tweet-container.retweet {
+  background-color: #f5f8fa;
+  border-left: 4px solid #1da1f2;
+}
+
+.retweet-header {
+  color: #657786;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.retweet-header span {
+  margin-left: 5px;
+}
+
+.tweet-content {
+  padding-left: 8px;
+}
+
+.tweet-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.username {
+  font-weight: bold;
+  color: #1da1f2;
+}
+
+.date {
+  color: #657786;
+  font-size: 0.9em;
+}
+
+.tweet-text {
+  margin-bottom: 12px;
+}
+
+.tweet-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.tweet-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+}

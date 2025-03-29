@@ -9,10 +9,11 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
-  const handleAuthSuccess = () => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
+  const handleAuthSuccess = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
     setIsAuthenticated(true);
+    navigate("/feed");
   };
 
   const handleLogout = () => {
@@ -52,16 +53,16 @@ const Login = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); 
+    setError("");
 
     const userData = { email, password };
 
     try {
-      const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch("http://localhost:3100/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -73,10 +74,7 @@ const Login = ({ onAuthSuccess }) => {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.token);
-      onAuthSuccess();
-      navigate("/feed");
-
+      onAuthSuccess(data.token);
     } catch (error) {
       setError(error.message);
     }
@@ -122,38 +120,37 @@ const Register = ({ onAuthSuccess }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [birthday, setBirthday] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
       return;
     }
-    
+
     setError("");
-    
+
     const userData = { email, password, fullName, birthday };
-    
+
     try {
-      const response = await fetch("http://localhost:3001/api/auth/register", {
+      const response = await fetch("http://localhost:3100/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
-    
-      const responseData = await response.json(); 
-      
+
+      const responseData = await response.json();
+
       if (!response.ok) {
         throw new Error(responseData.message || "Error en el registro");
       }
-    
-      onAuthSuccess();
-      navigate("/feed");
+
+      onAuthSuccess(responseData.token);
     } catch (error) {
       setError(error.message);
-    }    
+    }
   };
 
   return (
@@ -220,4 +217,3 @@ const Register = ({ onAuthSuccess }) => {
 };
 
 export default Auth;
-
